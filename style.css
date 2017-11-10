@@ -1,0 +1,80 @@
+body {
+	background: url('concert.jpg');
+}
+
+.navbar-brand {
+	margin-left: 15px;
+}
+
+.navbar-right {
+	margin-right: 21px;
+    margin-top: 7px;
+}
+
+#band-info {
+	width: 50%;
+    float: left;
+    margin-left: 20px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.card-inverse {
+	border-radius: 10px;
+	height: 505px;
+}
+
+.card-title {
+	margin-left: 10px;
+    padding-top: 10px;
+}
+
+a {
+	margin-left: 60px;
+    padding-top: 10px;
+}
+
+#band-search {
+	margin-top: 24px;
+    margin-left: 60px;
+}
+
+.card-text {
+	margin-left: 10px;
+}
+
+#band-bio {
+	width: 46%;
+    float: right;
+    margin-right: 15px;
+    color: white;
+}
+
+#bio {
+	height: 250px;
+}
+
+#top-ten {
+	background-color: #333;
+    border-color: #333;
+    width: 46%;
+    float: right;
+    margin-right: 15px;
+    margin-top: 5px;
+    color: white;
+    border-radius: 10px
+}
+
+#ten {
+	height: 229px;
+}
+
+#tour-dates {
+	clear:both;	
+	margin: 15px;
+}
+
+#tours {
+	height: 250px;
+    color: white
+}
