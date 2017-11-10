@@ -5,6 +5,7 @@
     <title>Groopy</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -15,7 +16,7 @@
 <a class="navbar-brand" href="#">groopy</a>
 
 <form class="form navbar-right">
-    <input class="form-control mr-md-2" type="text" placeholder="Search">
+    <input class="form-control mr-md-2" id="search-bar" type="text" placeholder="Search">
   </form>
 </nav>
 
@@ -26,7 +27,8 @@
             <h3 class="card-title">BAND IMAGE</h3>
             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
             <div id="insert-image">
-              <a href="https://placeholder.com"><img src="http://via.placeholder.com/350x350" class="img-fluid"></a>
+              <!-- <a href="https://placeholder.com"> -->
+                <img id="band-pic" src="" class="img-fluid"></a>
             </div>
         </div>
         <button id="band-search" type="button" class="btn btn-warning">SEARCH</button>
@@ -94,6 +96,8 @@
 </div>
 
 </div>
+
+<script src="logic.js"></script>
 
 
 
