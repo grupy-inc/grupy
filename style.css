@@ -2,12 +2,16 @@ body {
 	background: url('concert.jpg');
 }
 
+.navbar {
+    margin-bottom: 0px;
+}
+
 .navbar-brand {
 	margin-left: 15px;
 }
 
 .navbar-right {
-	margin-right: 21px;
+	margin-right: 20px;
     margin-top: 7px;
 }
 
@@ -17,6 +21,11 @@ body {
     margin-left: 20px;
     color: white;
     margin-bottom: 10px;
+}
+
+button.band-button {
+    background-color: #333;
+    color: white;
 }
 
 .card-inverse {
@@ -54,6 +63,10 @@ a {
 	height: 250px;
 }
 
+#top-song {
+    margin-top: 5px;
+}
+
 #top-ten {
 	background-color: #333;
     border-color: #333;
@@ -66,15 +79,35 @@ a {
 }
 
 #ten {
-	height: 229px;
+	height: 244px;
 }
 
 #tour-dates {
 	clear:both;	
-	margin: 15px;
+	margin: 20px;
+    width: 50%;
+    float: left;
+    margin-top: -16px;
 }
 
 #tours {
 	height: 250px;
     color: white
 }
+
+#your-bands {
+    float: left;
+    width: 46%;
+    margin-top: 23px;
+}
+
+#saved-bands {
+    height: 250px;
+    margin-top: -18px;
+    margin-left: -4px;
+    margin-right: 7px;
+    color: white;
+    border-radius: 10px;
+}
+
+
