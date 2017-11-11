@@ -1,6 +1,19 @@
-$('#band-search').on('click', function(search) {
+$('#band-search').on('click', function() {
         $('#song-list').empty();
-        $('.card-text').hide();
+        search();
+    });
+
+$(document).keypress(function(e) {
+       
+        if (e.which === 13) {
+            event.preventDefault();
+            $('#song-list').empty();
+            search();
+            console.log()
+        };
+    });
+
+function search() {
     // searchBand is entered in the search field in the DOM
     var searchBand = $('#search-bar').val();
     // URL string to grab Band Info (Name, Image, BIO)
@@ -29,15 +42,9 @@ $('#band-search').on('click', function(search) {
     console.log(retrievedBandImagePath);
 
     $('.card-text').text(retrievedBandName);
+    $('#bandImage').text(retrievedBandName);
     $('#insert-bio').text(retrievedBandBio);
     $('#band-pic').attr('src', retrievedBandImagePath);
-
-    $('#band-search').keypress(function(e) {
-        if (e.which === 13) {
-            search();
-        };
-    })
-
 
     });
     // Creates AJAX call for Song Info (JSON: SongQueryURL)
@@ -49,16 +56,20 @@ $('#band-search').on('click', function(search) {
 
     var topSongs = []
     var returnedSongs = response.toptracks.track
-    var stream = response.toptracks.track.streamable
+    var stream = parseInt(response.toptracks.track.streamable)
+    var songURL = response.toptracks.track.url
     topSongs.push(returnedSongs);
     console.log(topSongs);
     console.log(returnedSongs);
+    console.log(songURL);
     
     // var topSongs = response.toptracks[0].name;
     for (i = 0; i < returnedSongs.length; i++) {
-        var songNames = returnedSongs[i].name
+        var songNames = returnedSongs[i].name;
         var songList = "<li> " + songNames;
-        stream = "1"
+        $('#song-list').attr("ahref", returnedSongs[i].url);
+        stream = 2
+        console.log(returnedSongs[i].url);
 
         $('#song-list').append(songList);
     }
@@ -70,8 +81,8 @@ $('#band-search').on('click', function(search) {
     // console.log(retrievedSongName4);
     // console.log("--------------------------");
     });
-   
-  $.ajax({
+
+    $.ajax({
   url: EventQueryURL,
   method: "GET"
     }).done(function(response) {
@@ -96,15 +107,9 @@ $('#band-search').on('click', function(search) {
     console.log("Status: " + eventAvailable);
 
     console.log("--------------------------");
-    }); 
+    });
 
-   });  
-
-// $(document).keypress(function(e) {
-//         if (e.which === 13) {
-//             search();
-//         };
-//     });
+};
  
  // Creates AJAX call for Event Info (JSON: EventQueryURL)
 
