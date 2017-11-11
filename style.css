@@ -1,5 +1,5 @@
 body {
-	background: url('concert.jpg');
+    background: url('concert.jpg');
 }
 
 .navbar {
@@ -7,16 +7,27 @@ body {
 }
 
 .navbar-brand {
-	margin-left: 15px;
+    margin-left: 15px;
+    color: orange;
+}
+
+.navbar-inverse .navbar-brand {
+    color: orange;
 }
 
 .navbar-right {
-	margin-right: 20px;
+    margin-right: 20px;
     margin-top: 7px;
 }
 
+#band-pic {
+    margin-left: 65px;
+    height: 410px;
+    width: 483px;
+}
+
 #band-info {
-	width: 50%;
+    width: 50%;
     float: left;
     margin-left: 20px;
     color: white;
@@ -29,38 +40,43 @@ button.band-button {
 }
 
 .card-inverse {
-	border-radius: 10px;
-	height: 505px;
+    border-radius: 10px;
+    height: 505px;
 }
 
 .card-title {
-	margin-left: 10px;
+    margin-left: 10px;
     padding-top: 10px;
 }
 
 a {
-	margin-left: 60px;
+    margin-left: 60px;
     padding-top: 10px;
 }
 
 #band-search {
-	margin-top: 24px;
-    margin-left: 60px;
+    margin-top: 7px;
+    margin-left: 840px;
 }
 
 .card-text {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 #band-bio {
-	width: 46%;
+    width: 46%;
     float: right;
     margin-right: 15px;
     color: white;
 }
 
+#insert-bio {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 #bio {
-	height: 250px;
+    height: 250px;
 }
 
 #top-song {
@@ -68,7 +84,7 @@ a {
 }
 
 #top-ten {
-	background-color: #333;
+    background-color: #333;
     border-color: #333;
     width: 46%;
     float: right;
@@ -79,19 +95,22 @@ a {
 }
 
 #ten {
-	height: 244px;
+    height: 244px;
 }
 
+#ten-list {
+    margin-top: -9px;
+}
 #tour-dates {
-	clear:both;	
-	margin: 20px;
+    clear:both; 
+    margin: 20px;
     width: 50%;
     float: left;
     margin-top: -16px;
 }
 
 #tours {
-	height: 250px;
+    height: 250px;
     color: white
 }
 
@@ -109,5 +128,8 @@ a {
     color: white;
     border-radius: 10px;
 }
+
+
+
 
 
