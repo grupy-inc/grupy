@@ -67,7 +67,8 @@ function search() {
     
     // var topSongs = response.toptracks[0].name;
     for (i = 0; i < returnedSongs.length; i++) {
-        var songNames = returnedSongs[i].name;
+        var link = "<a href=>"
+        var songNames = returnedSongs[i].name + link;
         var songList = "<li> " + songNames;
         $('#song-list').attr("ahref", returnedSongs[i].url);
         stream = 2
