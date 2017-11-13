@@ -12,6 +12,9 @@ $(document).keypress(function(e) {
             console.log()
         };
     });
+$('#song-list').on('click', function () {
+    event.preventDefault();
+})
 
 function search() {
     // searchBand is entered in the search field in the DOM
@@ -21,10 +24,11 @@ function search() {
     // URL string to grab Top Song Info (Top 10)
     var SongQueryURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=10";
     // URL string to grab Event Info (All)
-    var startDateTime = "&startDateTime=2017-11-11T00:00:00Z";
-    var endDateTime   = "&endDateTime=2018-05-11T00:00:00Z";
-    var EventQueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=NqLOrTThVMyS7UdZGqCfjNEXqoVspUBD&keyword=" + searchBand + startDateTime + endDateTime;
-    console.log(EventQueryURL);
+    var startDateTime = "&startDateTime=2017-11-20T00:00:00Z";
+    var endDateTime   = "&endDateTime=2018-05-20T00:00:00Z";
+    var countryCode   = "&countryCode=US";    
+    var EventQueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=NqLOrTThVMyS7UdZGqCfjNEXqoVspUBD&keyword=" + searchBand + startDateTime + endDateTime + countryCode;
+
     
     // Creates AJAX call for Band Info (JSON: BandQueryURL)
     $.ajax({
@@ -65,57 +69,86 @@ function search() {
     console.log(returnedSongs);
     console.log(songURL);
     
-    // var topSongs = response.toptracks[0].name;
+
     for (i = 0; i < returnedSongs.length; i++) {
-        var link = "<a href=>"
-        var songNames = returnedSongs[i].name + link;
-        var songList = "<li> " + songNames;
-        $('#song-list').attr("ahref", returnedSongs[i].url);
-        stream = 2
-        console.log(returnedSongs[i].url);
+        var link = "<a href=" + returnedSongs[i].url + ">";
+        var songNames = returnedSongs[i].name;
+        var songList = "<li>" + link + songNames;
+        // console.log(returnedSongs[i].url);
 
         $('#song-list').append(songList);
-    }
-    // Console.log for Top 5 Songs
-    // console.log(retrievedSongName);
-    // console.log(retrievedSongName1);
-    // console.log(retrievedSongName2);
-    // console.log(retrievedSongName3);
-    // console.log(retrievedSongName4);
-    // console.log("--------------------------");
-    });
+    };
+
+ });
 
 
 
+// Call to grab event data
   $.ajax({
   url: EventQueryURL,
   method: "GET"
         }).done(function(response) {
-        // Variables for Event Info (JSON: EventQueryURL)
-        var eventName;
-        var eventDate;
-        var eventTime;
-        var eventZone;
-        var eventStatus;
-        var eventPrice;
-        var eventVenue;
-        var eventCity;
-        var eventState;
+        // Variables defined key:values we need for Event Info (JSON: EventQueryURL)
+        var eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL;
 
+        // eventObject condenses response string
         var eventObject = response._embedded.events;
+
+        // Finds number of event objects in the response object
         var numberOfEvents = Object.keys(eventObject).length;
 
+        var bandObject;
+        var nameKey;
 
-        for (var i = 0; i < numberOfEvents; i++){
-            eventName  = response._embedded.events[i].name;
-            eventDate  = response._embedded.events[i].dates.start.localDate;
-            eventTime  = response._embedded.events[i].dates.start.localTime;
-            eventZone  = response._embedded.events[i].dates.timezone;
-            eventStatus= response._embedded.events[i].dates.status.code;
-            eventPrice = response._embedded.events[i].priceRanges[0].min;
-            eventVenue = response._embedded.events[i]._embedded.venues[0].name;
-            eventCity  = response._embedded.events[i]._embedded.venues[0].city.name;
-            eventState = response._embedded.events[i]._embedded.venues[0].state.stateCode;
+    // Function to check to see if child key:value exists in response
+    function checkKey(bandObject, nameKey){
+
+        if(bandObject.hasOwnProperty(nameKey)){
+            return bandObject[nameKey];
+        } else {
+            return null;
+        }
+    }
+
+    // Loop through event object (eventObject) to print all of the 
+    // key event data (date, location, city, price, etc)
+    for (var i = 0; i < numberOfEvents; i++){
+
+        eventName   = checkKey(eventObject[i], "name");
+        eventDate   = checkKey(eventObject[i].dates.start, "localDate");            
+        eventTime   = checkKey(eventObject[i].dates.start, "localTime");
+        eventZone   = checkKey(eventObject[i].dates, "timezone");
+        eventStatus = checkKey(eventObject[i].dates.status, "code");
+        eventVenue  = checkKey(eventObject[i]._embedded.venues[0], "name");
+        eventCity   = checkKey(eventObject[i]._embedded.venues[0].city, "name");
+        eventURL    = checkKey(eventObject[i], "url");
+
+            // checkKey does not work for eventPrice...
+            // Required to have a separate/custom checkKey conditional because
+            // JSON is validated from parent to child.  And for priceRanges it is embedded
+            // in a sub-child (min), yet checkKey needs to test for
+            // the existence of "priceRanges"
+
+            if(eventObject[i].hasOwnProperty("priceRanges")){
+                eventPrice  = eventObject[i].priceRanges[0].min;
+            } else {
+                eventPrice = " Null";
+            }
+
+
+
+            // checkKey does not work for eventState...
+            // Required to have a separate/custom checkKey conditional because
+            // JSON is validated from parent to child.  And for State it is embedded
+            // in a sub-child of state (stateCode), yet checkKey needs to test for
+            // the existence of "state"
+            if(eventObject[i]._embedded.venues[0].hasOwnProperty("state")){
+                eventState  = eventObject[i]._embedded.venues[0].state.stateCode;
+            } else {
+                eventState = " Null";
+            }            
+
+
 
             console.log("Event Number: "        + i);
             console.log("Event Name: "          + eventName);
@@ -127,11 +160,11 @@ function search() {
             console.log("Event Venue: "         + eventVenue);
             console.log("Event City: "          + eventCity);
             console.log("Event State: "         + eventState);
+            console.log("Event URL: "           + eventURL);
             console.log("--------------------------");
-        };
+            };
 
-    }); 
-
+        }); 
 
 
 };
@@ -142,4 +175,5 @@ function search() {
  // 1. Attach Audio Links to Song list
  // 2. Clean up page on load
  // 3. Introduce additional functionality (discuss with team)
- // 4. Begin work on database storage
+ // 4. Event List
+ // 5. Begin work on database storage
