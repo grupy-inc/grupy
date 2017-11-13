@@ -21,8 +21,8 @@ body {
 }
 
 #band-pic {
-    margin-left: 65px;
-    height: 410px;
+    margin-left: 55px;
+    height: 392px;
     width: 483px;
 }
 
@@ -80,7 +80,7 @@ a {
 }
 
 #top-song {
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 #top-ten {
@@ -91,7 +91,8 @@ a {
     margin-right: 15px;
     margin-top: 5px;
     color: white;
-    border-radius: 10px
+    border-radius: 10px;
+    height: 250px;
 }
 
 #ten {
@@ -99,7 +100,7 @@ a {
 }
 
 #ten-list {
-    margin-top: -9px;
+    margin-top: -10px;
 }
 #tour-dates {
     clear:both; 
@@ -128,8 +129,3 @@ a {
     color: white;
     border-radius: 10px;
 }
-
-
-
-
-
