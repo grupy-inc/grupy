@@ -50,13 +50,13 @@ button.band-button {
 }
 
 a {
-    margin-left: 60px;
+    margin-left: 0px;
     padding-top: 10px;
 }
 
 #band-search {
     margin-top: 7px;
-    margin-left: 840px;
+    margin-left: 860px;
 }
 
 .card-text {
@@ -129,3 +129,85 @@ a {
     color: white;
     border-radius: 10px;
 }
+
+#saveBand {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+@media only screen 
+and (min-device-width : 300px) 
+and (max-device-width : 480px) { /* STYLES GO HERE */
+
+#band-search {
+    display:none;
+}
+
+#band-pic {
+    width: 617px;
+    margin-left: 167px;
+}
+
+#bio {
+    display: none;
+}
+
+#top-ten {
+    margin-top: 20px;
+}
+
+#tour-dates {
+    clear: both;
+    margin: 20px;
+    width: 50%;
+    float: left;
+    margin-top: -279px;
+}
+
+#your-bands {
+    float: left;
+    width: 50%;
+    margin-top: 10px;
+    /* margin-right: 15px; */
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.card-inverse {
+    margin-right: 20px;
+}
+
+#band-info {
+    width: 98%;
+}
+
+#tours {
+    margin-left: 20px;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
