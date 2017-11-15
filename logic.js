@@ -1,5 +1,7 @@
 $('#band-search').on('click', function() {
         $('#song-list').empty();
+        $('#tour-list').empty();
+        $('#search-bar').trigger('reset');
         search();
     });
 
@@ -8,13 +10,57 @@ $(document).keypress(function(e) {
         if (e.which === 13) {
             event.preventDefault();
             $('#song-list').empty();
+            $('#tour-list').empty();
+            $('#search-bar').trigger('reset');
             search();
             console.log()
         };
     });
-$('#song-list').on('click', function () {
-    event.preventDefault();
-})
+
+    var config = {
+      apiKey: "AIzaSyBhkcmUfR4hH2ktzPqtZ5RrQlr1pxlJBVE",
+      authDomain: "groopy-ee480.firebaseapp.com",
+      databaseURL: "https://groopy-ee480.firebaseio.com",
+      projectId: "groopy-ee480",
+      storageBucket: "groopy-ee480.appspot.com",
+      messagingSenderId: "226298723960"
+    };
+       
+
+        firebase.initializeApp(config);
+
+        var database = firebase.database();
+
+        // **** LISTENER
+        // Create a listener for the Firebase database; so when a 
+        // child element is added, it will grab a snapshot of each 
+        // object in the database that was created and store it in "sv"
+        database.ref().on("child_added", function(childSnapshot) {
+        var sv = childSnapshot.val();
+        $('#saved-band1').text(sv.dband);
+
+        // Add relevent value from the object (sv.bandName) to button id <saved-band#>
+        // *** ADD HTML CODE HERE (sv.dband)
+
+          // If any errors are experienced, log them to console.
+        }, function(errorObject) {
+          console.log("The read failed: " + errorObject.code);
+        });
+
+        // **** LISTENER
+        // Create a listner for the "SAVE BAND TO FAVROITES" button that grabs
+        // relevent form values and writes them to the database
+        // $("#saveBand").on("click", function(){
+        //     event.preventDefault();
+        //     var saveToFavorites = retrievedBandName
+
+
+        //     database.ref().push({
+        //       dband: saveToFavorites,
+        //       dateAdded: firebase.database.ServerValue.TIMESTAMP
+        //     });
+
+        // });
 
 function search() {
     // searchBand is entered in the search field in the DOM
@@ -29,7 +75,6 @@ function search() {
     var countryCode   = "&countryCode=US";    
     var EventQueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=NqLOrTThVMyS7UdZGqCfjNEXqoVspUBD&keyword=" + searchBand + startDateTime + endDateTime + countryCode;
 
-    
     // Creates AJAX call for Band Info (JSON: BandQueryURL)
     $.ajax({
       url: BandQueryURL,
@@ -50,7 +95,20 @@ function search() {
     // $('.card-text').text(retrievedBandName);
     $('#bandImage').text(retrievedBandName);
     $('#insert-bio').text(retrievedBandBio);
+    $('#actualBio').attr("<a href=>");
     $('#band-pic').attr('src', retrievedBandImagePath);
+
+    $("#saveBand").on("click", function(){
+            event.preventDefault();
+            var saveToFavorites = retrievedBandName
+
+
+            database.ref().push({
+              dband: saveToFavorites,
+              dateAdded: firebase.database.ServerValue.TIMESTAMP
+            });
+
+        });
 
     });
     // Creates AJAX call for Song Info (JSON: SongQueryURL)
@@ -71,12 +129,13 @@ function search() {
     
 
     for (i = 0; i < returnedSongs.length; i++) {
-        var link = "<a href=" + returnedSongs[i].url + ">";
+        var link = "<a" + " target=" + "'_blank'" + "href=" + returnedSongs[i].url + ">";
         var songNames = returnedSongs[i].name;
         var songList = "<li>" + link + songNames;
         // console.log(returnedSongs[i].url);
 
         $('#song-list').append(songList);
+
     };
 
  });
@@ -107,6 +166,7 @@ function search() {
             return bandObject[nameKey];
         } else {
             return null;
+
         }
     }
 
@@ -135,8 +195,6 @@ function search() {
                 eventPrice = " Null";
             }
 
-
-
             // checkKey does not work for eventState...
             // Required to have a separate/custom checkKey conditional because
             // JSON is validated from parent to child.  And for State it is embedded
@@ -148,7 +206,14 @@ function search() {
                 eventState = " Null";
             }            
 
+            var eventLink = "<a" + " target=" + "'_blank'" + "href=" + eventURL + ">";
+            var eventInfo = eventDate + " " + eventCity + " " + eventState + " " + eventTime;
+            var eventList = "<li>" + eventLink + eventInfo;
+            $('#tour-list').append(eventList);
 
+            if (eventObject[i] === 0) {
+                $('#tour-list').text("They're not on tour right now :(")
+            }
 
             console.log("Event Number: "        + i);
             console.log("Event Name: "          + eventName);
@@ -165,7 +230,6 @@ function search() {
             };
 
         }); 
-
 
 };
  
