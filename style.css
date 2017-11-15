@@ -36,7 +36,7 @@ body {
 
 button.band-button {
     background-color: #333;
-    color: white;
+    color: orange;
 }
 
 .card-inverse {
@@ -120,7 +120,7 @@ a:focus {
 }
 
 #tours {
-    height: 250px;
+    height: 487px;
     color: white
 }
 
