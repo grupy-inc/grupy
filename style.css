@@ -52,6 +52,15 @@ button.band-button {
 a {
     margin-left: 0px;
     padding-top: 10px;
+    color: orange;
+}
+
+a:hover {
+    color: white;
+}
+
+a:focus {
+    color: white;
 }
 
 #band-search {
@@ -133,6 +142,7 @@ a {
 #saveBand {
     margin-left: 10px;
     margin-bottom: 10px;
+    background: orange;
 }
 
 @media only screen 
@@ -210,4 +220,3 @@ and (max-device-width : 480px) { /* STYLES GO HERE */
 
 
 }
-
