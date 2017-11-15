@@ -147,9 +147,14 @@ function search() {
   url: EventQueryURL,
   method: "GET"
         }).done(function(response) {
+
+        if (response.page.totalElements === 0) {
+                eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL = "Null";
+                $('#tour-list').text("They're not on tour right now :(");
+            } else {
         // Variables defined key:values we need for Event Info (JSON: EventQueryURL)
         var eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL;
-
+ 
         // eventObject condenses response string
         var eventObject = response._embedded.events;
 
@@ -207,7 +212,7 @@ function search() {
             }            
 
             var eventLink = "<a" + " target=" + "'_blank'" + "href=" + eventURL + ">";
-            var eventInfo = eventDate + " " + eventCity + " " + eventState + " " + eventTime;
+            var eventInfo = eventName + " | " + eventDate + " | " + eventCity + " | " + eventState;
             var eventList = "<li>" + eventLink + eventInfo;
             $('#tour-list').append(eventList);
 
@@ -228,7 +233,7 @@ function search() {
             console.log("Event URL: "           + eventURL);
             console.log("--------------------------");
             };
-
+        }
         }); 
 
 };
