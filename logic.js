@@ -83,10 +83,10 @@ function search(item) {
     var searchBand = item;
 
     // URL string to grab Band Info (Name, Image, BIO)
-    var BandQueryURL = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=1";
+    var BandQueryURL = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=1";
 
     // URL string to grab Top Song Info (Top 10 Songs)
-    var SongQueryURL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=10";
+    var SongQueryURL = "https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=10";
 
     // URL string to grab Event Info (Date, Time, Location, Event Name)
     var startDateTime = "&startDateTime=2017-11-20T00:00:00Z";
