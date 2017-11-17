@@ -1,28 +1,39 @@
-
+$(document).ready(function() {
+    $('#saved-bands').empty();
 // **** LISTENER
 // Create a listener to trigger when "Search Icon" is clicked to clear the <div> 
 // and perform a search on the term in the search field
 $('#band-search').on('click', function() {
+    var item = $('#search-bar').val();
     $('#song-list').empty();
     $('#tour-list').empty();
     $('#search-bar').trigger('reset');
-    search();
+    search(item);
 });
-
 
 // **** LISTENER
 // Create a listener to trigger when "Enter" is pressed to clear the <div> 
 // and perform a search on the term in the search field
 $(document).keypress(function(e) {
     if (e.which === 13) {
+        var item = $('#search-bar').val();
         event.preventDefault();
         $('#song-list').empty();
         $('#tour-list').empty();
         $('#search-bar').trigger('reset');
-        search();
+        search(item);
         console.log()
     };
 });
+
+
+$(document).on('click', '.band-button', function() {
+    var item = $(this)[0].id;
+    console.log(item);
+    $('#song-list').empty();
+    $('#tour-list').empty();
+    search(item);        
+ });
 
 
 // Initialize Firebase (database)
@@ -46,22 +57,30 @@ var database = firebase.database();
 // object in the database that was created and store it in "sv"
 database.ref().on("child_added", function(childSnapshot) {
     var sv = childSnapshot.val();
+    svBandArray = []; 
+    svBandArray.push(sv);
+    console.log(svBandArray);
+    var b = $('<button>');
+    // b.addClass('list-group-item band-button list-group-item-action');
+    b.addClass('band-button');
+    b.text(sv.dband);
+    b.attr("id", sv.dband, "type='button'");
+    $('#saved-bands').append(b);
 
     // Write each element in the database (band name) to the saved band button list
-    $('#saved-band1').text(sv.dband);
 
 
     // If any errors are experienced, log them to console.
-    }, function(errorObject) {
+    },  
+    function(errorObject) {
         console.log("The read failed: " + errorObject.code);
 });
 
-
 // Function to query API's (Ticketmaster and last.fm)
-function search() {
+function search(item) {
 
     // searchBand value is grabbed from the search field in the DOM
-    var searchBand = $('#search-bar').val();
+    var searchBand = item;
 
     // URL string to grab Band Info (Name, Image, BIO)
     var BandQueryURL = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + searchBand + "&api_key=0cd512b53d58de3fd8a79d4be57a971c&format=json&limit=1";
@@ -75,6 +94,7 @@ function search() {
     var countryCode   = "&countryCode=US";    
     var EventQueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=NqLOrTThVMyS7UdZGqCfjNEXqoVspUBD&keyword=" + searchBand + startDateTime + endDateTime + countryCode;
 
+   
     // Creates AJAX call for Band Info (JSON: BandQueryURL)
     $.ajax({
       url: BandQueryURL,
@@ -96,10 +116,9 @@ function search() {
         console.log(retrievedBandBio);
         console.log(retrievedBandImagePath);
 
-        // $('.card-text').text(retrievedBandName);
         $('#bandImage').text(retrievedBandName);
-        $('#insert-bio').text(retrievedBandBio);
-        $('#actualBio').attr("<a href=>");
+        $('#insert-bio').html(retrievedBandBio);
+        $('#insert-bio').attr("<a href=>");
         $('#band-pic').attr('src', retrievedBandImagePath);
 
 
@@ -121,10 +140,7 @@ function search() {
     });
 
 
-
-
     // Creates AJAX call for Song Info (JSON: SongQueryURL)
-    // Currently working on displaying top tracks - Luke
     $.ajax({
         url: SongQueryURL,
         method: "GET"
@@ -144,7 +160,6 @@ function search() {
             var link = "<a" + " target=" + "'_blank'" + "href=" + returnedSongs[i].url + ">";
             var songNames = returnedSongs[i].name;
             var songList = "<li>" + link + songNames;
-            // console.log(returnedSongs[i].url);
 
             $('#song-list').append(songList);
         };
@@ -161,98 +176,100 @@ function search() {
         }).done(function(response) {
 
         if (response.page.totalElements === 0) {
+            
             eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL = "Null";
+            
             $('#tour-list').text("They're not on tour right now :(");
-        } else {
-        // Variables defined key:values we need for Event Info (JSON: EventQueryURL)
-        var eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL;
-
-        // eventObject condenses response string
-        var eventObject = response._embedded.events;
-
-        // Finds number of event objects in the response object
-        var numberOfEvents = Object.keys(eventObject).length;
-
-        var bandObject;
-        var nameKey;
-
-        // Function to check to see if child key:value exists in response
-        function checkKey(bandObject, nameKey){
-
-            if(bandObject.hasOwnProperty(nameKey)){
-                return bandObject[nameKey];
+           
             } else {
-                return null;
+                    // Variables defined key:values we need for Event Info (JSON: EventQueryURL)
+                    var eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL;
 
-            }
-        }
+                    // eventObject condenses response string
+                    var eventObject = response._embedded.events;
 
-        // Loop through event object (eventObject) to print all of the 
-        // key event data (date, location, city, price, etc)
-        for (var i = 0; i < numberOfEvents; i++){
+                    // Finds number of event objects in the response object
+                    var numberOfEvents = Object.keys(eventObject).length;
 
-            // Define key event variables for display
-            eventName   = checkKey(eventObject[i], "name");
-            eventDate   = checkKey(eventObject[i].dates.start, "localDate");            
-            eventTime   = checkKey(eventObject[i].dates.start, "localTime");
-            eventZone   = checkKey(eventObject[i].dates, "timezone");
-            eventStatus = checkKey(eventObject[i].dates.status, "code");
-            eventVenue  = checkKey(eventObject[i]._embedded.venues[0], "name");
-            eventCity   = checkKey(eventObject[i]._embedded.venues[0].city, "name");
-            eventURL    = checkKey(eventObject[i], "url");
+                    var bandObject;
+                    var nameKey;
 
-            // checkKey does not work for eventPrice...
-            // Required to have a separate/custom checkKey conditional because
-            // JSON is validated from parent to child.  And for priceRanges it is embedded
-            // in a sub-child (min), yet checkKey needs to test for
-            // the existence of "priceRanges"
+                    // Function to check to see if child key:value exists in response
+                    function checkKey(bandObject, nameKey){
 
-            if(eventObject[i].hasOwnProperty("priceRanges")){
-                eventPrice  = eventObject[i].priceRanges[0].min;
-            } else {
-                eventPrice = " Null";
-            }
+                        if(bandObject.hasOwnProperty(nameKey)){
+                            return bandObject[nameKey];
+                        } else {
+                            return null;
 
-            // checkKey does not work for eventState...
-            // Required to have a separate/custom checkKey conditional because
-            // JSON is validated from parent to child.  And for State it is embedded
-            // in a sub-child of state (stateCode), yet checkKey needs to test for
-            // the existence of "state"
-            if(eventObject[i]._embedded.venues[0].hasOwnProperty("state")){
-                eventState  = eventObject[i]._embedded.venues[0].state.stateCode;
-            } else {
-                eventState = " Null";
-            }            
+                        }
+                    }
 
-            // Write event info to <div>
-            var eventLink = "<a" + " target=" + "'_blank'" + "href=" + eventURL + ">";
-            var eventInfo = eventName + " | " + eventDate + " | " + eventCity + " | " + eventState;
-            var eventList = "<li>" + eventLink + eventInfo;
-            $('#tour-list').append(eventList);
+                    // Loop through event object (eventObject) to print all of the 
+                    // key event data (date, location, city, price, etc)
+                    for (var i = 0; i < numberOfEvents; i++){
 
-            if (eventObject[i] === 0) {
-                $('#tour-list').text("They're not on tour right now :(")
-            }
+                        // Define key event variables for display
+                        eventName   = checkKey(eventObject[i], "name");
+                        eventDate   = checkKey(eventObject[i].dates.start, "localDate");            
+                        eventTime   = checkKey(eventObject[i].dates.start, "localTime");
+                        eventZone   = checkKey(eventObject[i].dates, "timezone");
+                        eventStatus = checkKey(eventObject[i].dates.status, "code");
+                        eventVenue  = checkKey(eventObject[i]._embedded.venues[0], "name");
+                        eventCity   = checkKey(eventObject[i]._embedded.venues[0].city, "name");
+                        eventURL    = checkKey(eventObject[i], "url");
 
-            // Write event info to console.log
-            console.log("Event Number: "        + i);
-            console.log("Event Name: "          + eventName);
-            console.log("Event Date: "          + eventDate);
-            console.log("Event Time: "          + eventTime);
-            console.log("Event Time Zone: "     + eventZone);
-            console.log("Ticket Status: "       + eventStatus);
-            console.log("Ticket Price (min): $" + eventPrice);
-            console.log("Event Venue: "         + eventVenue);
-            console.log("Event City: "          + eventCity);
-            console.log("Event State: "         + eventState);
-            console.log("Event URL: "           + eventURL);
-            console.log("--------------------------");
-            }
-        }
+                        // checkKey does not work for eventPrice...
+                        // Required to have a separate/custom checkKey conditional because
+                        // JSON is validated from parent to child.  And for priceRanges it is embedded
+                        // in a sub-child (min), yet checkKey needs to test for
+                        // the existence of "priceRanges"
 
-    });
+                        if(eventObject[i].hasOwnProperty("priceRanges")){
+                            eventPrice  = eventObject[i].priceRanges[0].min;
+                            } else {
+                                eventPrice = " Null";
+                            }
 
-};
+                        // checkKey does not work for eventState...
+                        // Required to have a separate/custom checkKey conditional because
+                        // JSON is validated from parent to child.  And for State it is embedded
+                        // in a sub-child of state (stateCode), yet checkKey needs to test for
+                        // the existence of "state"
+                        if(eventObject[i]._embedded.venues[0].hasOwnProperty("state")){
+                            eventState  = eventObject[i]._embedded.venues[0].state.stateCode;
+                            } else {
+                                eventState = " Null";
+                            }            
+
+                        // Write event info to <div>
+                        var eventLink = "<a" + " target=" + "'_blank'" + "href=" + eventURL + ">";
+                        var eventInfo =  eventCity + ", " + eventState + " | " + eventDate + " | " + eventName;
+                        var eventList = "<li>" + eventLink + eventInfo;
+                        $('#tour-list').append(eventList);
+
+
+                        // Write event info to console.log
+                        // console.log("Event Number: "        + i);
+                        // console.log("Event Name: "          + eventName);
+                        // console.log("Event Date: "          + eventDate);
+                        // console.log("Event Time: "          + eventTime);
+                        // console.log("Event Time Zone: "     + eventZone);
+                        // console.log("Ticket Status: "       + eventStatus);
+                        // console.log("Ticket Price (min): $" + eventPrice);
+                        // console.log("Event Venue: "         + eventVenue);
+                        // console.log("Event City: "          + eventCity);
+                        // console.log("Event State: "         + eventState);
+                        // console.log("Event URL: "           + eventURL);
+                        // console.log("--------------------------");
+                        }
+                    }
+
+                });
+
+            };
+
+        });
  
 
  
