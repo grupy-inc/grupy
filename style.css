@@ -116,7 +116,7 @@ a:focus {
     margin: 20px;
     width: 50%;
     float: left;
-    margin-top: -16px;
+    margin-top: -23px;
 }
 
 #tours {
@@ -127,7 +127,7 @@ a:focus {
 #your-bands {
     float: left;
     width: 46%;
-    margin-top: 23px;
+    margin-top: 15px;
 }
 
 #saved-bands {
@@ -143,6 +143,27 @@ a:focus {
     margin-left: 10px;
     margin-bottom: 10px;
     background: orange;
+}
+
+#suggested-bands {
+    width: 45%;
+    float: right;
+    /* margin-left: 12px; */
+    margin-right: 20px;
+}
+
+#suggestions {
+    background-color: #333;
+    border-color: #333;
+    width: 102%;
+    /* float: right; */
+    height: 224px;
+    margin-top: -32px;
+    margin-left: -4px;
+}
+
+#suggested-header {
+    color: white;
 }
 
 @media only screen 
@@ -194,29 +215,32 @@ and (max-device-width : 480px) { /* STYLES GO HERE */
 #tours {
     margin-left: 20px;
 }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
