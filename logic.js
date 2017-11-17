@@ -178,8 +178,10 @@ function search(item) {
         if (response.page.totalElements === 0) {
             
             eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL = "Null";
-            
-            $('#tour-list').text("They're not on tour right now :(");
+            $('#tour-list').text("We're so sorry, we can't seem to find their tour info :(");
+            var sorryImage = $('<img>');
+            sorryImage.attr("src", "http://78.media.tumblr.com/36788ba16aa2168baeb3476f10cd3a3b/tumblr_inline_mscya55blR1qz4rgp.gif");
+            $('#tour-list').append(sorryImage);
            
             } else {
                     // Variables defined key:values we need for Event Info (JSON: EventQueryURL)
