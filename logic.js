@@ -26,7 +26,7 @@ $(document).keypress(function(e) {
     };
 });
 
-
+// listener to initiate search function on saved band button click
 $(document).on('click', '.band-button', function() {
     var item = $(this)[0].id;
     console.log(item);
@@ -61,7 +61,6 @@ database.ref().on("child_added", function(childSnapshot) {
     svBandArray.push(sv);
     console.log(svBandArray);
     var b = $('<button>');
-    // b.addClass('list-group-item band-button list-group-item-action');
     b.addClass('band-button');
     b.text(sv.dband);
     b.attr("id", sv.dband, "type='button'");
@@ -103,22 +102,12 @@ function search(item) {
 
         // Variables for BandName, BandImagePath and BandBio
         var retrievedBandName  = response.artist.name;
-
-        // var retrievedBandImageSize = response.artist.image[3].size;
         var retrievedBandBio = response.artist.bio.summary;
         var retrievedBandImagePath = response.artist.image[3]["#text"];
 
-        // console.log for BandName, BandImagePath and BandBio
-        console.log(retrievedBandName);
-
-        // console.log(retrievedBandImageSize);
-        console.log("--------------------------");
-        console.log(retrievedBandBio);
-        console.log(retrievedBandImagePath);
-
+        // displays retrieved info in proper div elements
         $('#bandImage').text(retrievedBandName);
         $('#insert-bio').html(retrievedBandBio);
-        $('#insert-bio').attr("<a href=>");
         $('#band-pic').attr('src', retrievedBandImagePath);
 
 
@@ -155,12 +144,11 @@ function search(item) {
         console.log(returnedSongs);
         console.log(songURL);
     
-
+        // displays top songs as links to their respective last.fm page
         for (i = 0; i < returnedSongs.length; i++) {
             var link = "<a" + " target=" + "'_blank'" + "href=" + returnedSongs[i].url + ">";
             var songNames = returnedSongs[i].name;
             var songList = "<li>" + link + songNames;
-
             $('#song-list').append(songList);
         };
     });
@@ -175,12 +163,16 @@ function search(item) {
     method: "GET"
         }).done(function(response) {
 
+        // if statement for dealing with exceptions where bands don't have tour dates posted in ticketmaster's database
         if (response.page.totalElements === 0) {
-            
+
+            var gifArray = ['http://78.media.tumblr.com/36788ba16aa2168baeb3476f10cd3a3b/tumblr_inline_mscya55blR1qz4rgp.gif', 'https://media1.tenor.com/images/8495c5d8fea1704cb1934f99f1a433f9/tenor.gif?itemid=4075686', 'http://25.media.tumblr.com/46b66d57fc1f0708598e0089cbd554af/tumblr_mwqgpsqSUu1s9816mo2_r1_500.gif', 'https://media.giphy.com/media/bjfv14wZU7PiM/giphy.gif', 'https://viralviralvideos.com/wp-content/uploads/GIF/2014/08/GIF-cry-dawson-feelings-hurt-sad-GIF.gif', 'http://38.media.tumblr.com/1b4d0cf4bc19a554532aaee00418796b/tumblr_nb2ajsfeJo1tts3f4o1_500.gif']
+            var gifChoice = gifArray[Math.floor(Math.random() * gifArray.length)]
+
             eventName, eventDate, eventTime, eventZone, eventStatus, eventPrice, eventVenue, eventCity, eventState, eventURL = "Null";
-            $('#tour-list').text("We're so sorry, we can't seem to find their tour info :(");
+            $('#tour-list').text("We're sorry, we can't seem to find their tour info :(");
             var sorryImage = $('<img>');
-            sorryImage.attr("src", "http://78.media.tumblr.com/36788ba16aa2168baeb3476f10cd3a3b/tumblr_inline_mscya55blR1qz4rgp.gif");
+            sorryImage.attr("src", gifChoice);
             $('#tour-list').append(sorryImage);
            
             } else {
@@ -250,20 +242,6 @@ function search(item) {
                         var eventList = "<li>" + eventLink + eventInfo;
                         $('#tour-list').append(eventList);
 
-
-                        // Write event info to console.log
-                        // console.log("Event Number: "        + i);
-                        // console.log("Event Name: "          + eventName);
-                        // console.log("Event Date: "          + eventDate);
-                        // console.log("Event Time: "          + eventTime);
-                        // console.log("Event Time Zone: "     + eventZone);
-                        // console.log("Ticket Status: "       + eventStatus);
-                        // console.log("Ticket Price (min): $" + eventPrice);
-                        // console.log("Event Venue: "         + eventVenue);
-                        // console.log("Event City: "          + eventCity);
-                        // console.log("Event State: "         + eventState);
-                        // console.log("Event URL: "           + eventURL);
-                        // console.log("--------------------------");
                         }
                     }
 
